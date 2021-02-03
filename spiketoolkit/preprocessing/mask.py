@@ -26,8 +26,8 @@ class MaskRecording(BasePreprocessorRecordingExtractor):
             start_frame = 0 
         if end_frame is None:
             end_frame = len(traces[:,0])
-        if len(traces[:,0]) == len(mask):
-            traces[~self._mask[start_frame:end_frame]] = 0.0
+        if len(traces[0,:]) == len(mask):
+            traces[:,~self._mask[start_frame:end_frame]] = 0.0
         else:  
             ValueError(f'Error: the length of traces {len(traces[:,0])} is different than the length of the mask {len(self._mask)}; no mask applied')
         return traces
@@ -42,7 +42,7 @@ def mask(recording, mask=None):
     ----------
     recording: RecordingExtractor
         The recording extractor to be transformed
-    mask: list or numpy array of boolean values of the same length as the recording
+    mask: numpy array of boolean values of the same length as the number of frames in the recording. False values correspond to frames that will be set to 0.
 
     Returns
     -------
